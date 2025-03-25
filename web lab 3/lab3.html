@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Редактор тексту</title>
+    <style>
+        #text {
+            width: 100%;
+            height: 150px;
+            font-size: 16px;
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+        .buttons {
+            margin-top: 10px;
+        }
+        button {
+            margin: 5px;
+            padding: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h2>Редактор тексту</h2>
+    <textarea id="text"></textarea>
+    <div class="buttons">
+        <button onclick="changeStyle('bold')">Жирний</button>
+        <button onclick="changeStyle('italic')">Нахил</button>
+        <button onclick="changeStyle('underline')">Підкреслення</button>
+        <button onclick="resetStyle()">Звичайний</button>
+        <br>
+        <button onclick="changeSize(14)">Малий</button>
+        <button onclick="changeSize(18)">Середній</button>
+        <button onclick="changeSize(24)">Великий</button>
+        <br>
+        <button onclick="changeColor('red')">Червоний</button>
+        <button onclick="changeColor('blue')">Синій</button>
+        <button onclick="changeColor('green')">Зелений</button>
+        <br>
+        <button onclick="changeAlign('left')">Ліворуч</button>
+        <button onclick="changeAlign('center')">Центр</button>
+        <button onclick="changeAlign('right')">Праворуч</button>
+        <br>
+        <button onclick="clearText()">Очистити</button>
+        <button onclick="animateText()">Анімація</button>
+    </div>
+    <script>
+        function changeStyle(style) {
+            let text = document.getElementById("text");
+            text.style.fontWeight = style === 'bold' ? 'bold' : 'normal';
+            text.style.fontStyle = style === 'italic' ? 'italic' : 'normal';
+            text.style.textDecoration = style === 'underline' ? 'underline' : 'none';
+        }
+        
+        function resetStyle() {
+            let text = document.getElementById("text");
+            text.style.fontWeight = 'normal';
+            text.style.fontStyle = 'normal';
+            text.style.textDecoration = 'none';
+        }
+        
+        function changeSize(size) {
+            document.getElementById("text").style.fontSize = size + "px";
+        }
+        
+        function changeColor(color) {
+            document.getElementById("text").style.color = color;
+        }
+        
+        function changeAlign(align) {
+            document.getElementById("text").style.textAlign = align;
+        }
+        
+        function clearText() {
+            document.getElementById("text").value = "";
+        }
+        
+        function animateText() {
+            let text = document.getElementById("text");
+            let colors = ['red', 'blue', 'green', 'purple', 'orange'];
+            let i = 0;
+            let interval = setInterval(() => {
+                text.style.color = colors[i % colors.length];
+                text.style.transform = `rotate(${i * 10}deg)`;
+                i++;
+                if (i > 20) clearInterval(interval);
+            }, 100);
+        }
+    </script>
+</body>
+</html>

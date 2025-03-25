@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Порівняння автомобілів</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; background-color: #f4f4f4; }
+        h1 { color: #333; }
+        .container { max-width: 800px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0px 0px 10px rgba(0,0,0,0.1); }
+        .car-selection { display: flex; justify-content: space-around; align-items: center; flex-wrap: wrap; }
+        .car-option { text-align: center; width: 200px; }
+        .car-image { width: 150px; height: auto; border-radius: 10px; margin-top: 10px; }
+        .car-details { font-size: 14px; color: #555; margin-top: 5px; }
+        select { width: 200px; height: 100px; margin-top: 10px; }
+        button { margin-top: 10px; padding: 10px 20px; background: #007BFF; color: white; border: none; cursor: pointer; border-radius: 5px; }
+        button:hover { background: #0056b3; }
+        #result { margin-top: 20px; font-weight: bold; padding: 10px; background: #e9ecef; border-radius: 5px; }
+        #images { margin-top: 20px; display: flex; justify-content: center; gap: 20px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Порівняння автомобілів</h1>
+        <div class="car-selection" id="carSelection"></div>
+        <select id="carList" multiple></select>
+        <br>
+        <button id="compareButton">Порівняти</button>
+        <div id="result"></div>
+        <div id="images"></div>
+    </div>
+
+    <script>
+        const cars = [
+            { name: "Toyota Camry", year: 2020, mileage: 30000, maxSpeed: 210, fuelConsumption: 7.5, image: "toyota.jpg" },
+            { name: "Honda Accord", year: 2019, mileage: 40000, maxSpeed: 220, fuelConsumption: 8.0, image: "honda.jpg" },
+            { name: "BMW 5", year: 2021, mileage: 20000, maxSpeed: 250, fuelConsumption: 9.5, image: "bmw.jpeg" },
+            { name: "Mercedes C", year: 2018, mileage: 50000, maxSpeed: 230, fuelConsumption: 8.7, image: "mercedes.jpg" }
+        ];
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const carList = document.getElementById("carList");
+            const carSelection = document.getElementById("carSelection");
+            const compareButton = document.getElementById("compareButton");
+            const resultDiv = document.getElementById("result");
+            const imagesDiv = document.getElementById("images");
+
+            cars.forEach((car, index) => {
+                const option = document.createElement("option");
+                option.value = index;
+                option.textContent = car.name;
+                carList.appendChild(option);
+
+                const carDiv = document.createElement("div");
+                carDiv.classList.add("car-option");
+                carDiv.innerHTML = `
+                    <img src="${car.image}" alt="${car.name}" class="car-image">
+                    <p class="car-details">
+                        Рік: ${car.year}<br>
+                        Пробіг: ${car.mileage} км<br>
+                        Макс. швидкість: ${car.maxSpeed} км/год<br>
+                        Витрати пального: ${car.fuelConsumption} л/100км
+                    </p>
+                `;
+                carSelection.appendChild(carDiv);
+            });
+
+            compareButton.addEventListener("click", () => {
+                const selectedOptions = Array.from(carList.selectedOptions);
+                if (selectedOptions.length !== 2) {
+                    resultDiv.textContent = "Оберіть два автомобілі для порівняння";
+                    imagesDiv.innerHTML = "";
+                    return;
+                }
+
+                const car1 = cars[selectedOptions[0].value];
+                const car2 = cars[selectedOptions[1].value];
+                
+                let comparisonResult = `Порівняння ${car1.name} та ${car2.name}:<br>`;
+                comparisonResult += `Рік випуску: ${car1.year > car2.year ? car1.name : car2.name} кращий<br>`;
+                comparisonResult += `Пробіг: ${car1.mileage < car2.mileage ? car1.name : car2.name} кращий<br>`;
+                comparisonResult += `Макс. швидкість: ${car1.maxSpeed > car2.maxSpeed ? car1.name : car2.name} кращий<br>`;
+                comparisonResult += `Витрати пального: ${car1.fuelConsumption < car2.fuelConsumption ? car1.name : car2.name} кращий<br>`;
+
+                resultDiv.innerHTML = comparisonResult;
+
+                imagesDiv.innerHTML = `
+                    <img src="${car1.image}" alt="${car1.name}" class="car-image">
+                    <img src="${car2.image}" alt="${car2.name}" class="car-image">
+                `;
+            });
+        });
+    </script>
+</body>
+</html>
+
